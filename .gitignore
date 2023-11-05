@@ -1,7 +1,8 @@
 services/frontend/.DS_Store
 services/frontend/node_modules
 services/frontend/dist
-
+config.py
+.env
 
 # local env files
 .env.local

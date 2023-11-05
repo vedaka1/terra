@@ -1,9 +1,13 @@
+from typing import List
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # NEW
+from fastapi.middleware.cors import CORSMiddleware
+from src.routes import users
 
 
 app = FastAPI()
 
+
+# Allow recieve requests from frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8080"],
@@ -12,7 +16,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-def home():
-    return "Hello, World!"
+app.include_router(users.router)
