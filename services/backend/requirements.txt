@@ -5,3 +5,7 @@ SQLAlchemy
 asyncpg
 passlib
 bcrypt
+python-jose
+alembic
+pydantic-settings
+python-multipart

@@ -21,10 +21,58 @@ body::-webkit-scrollbar {
 .main-page {
     width: 100%;
     height: 100%;
-    padding: 10px;
-    padding-bottom: 50px;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
  }
+ 
+ .wrapper {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+ }
+
+ button {
+    padding: 0.7rem;
+    outline: none;
+    border: none;
+    border-radius: 15px;
+    width: 100%;
+    background-color: #000000;
+    font-size: 16px;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+ }
+ button:active {
+   background-color: #131313;
+ }
+
+ input {
+    width: 100%;
+    border-radius: 15px;
+    padding: 0.7rem;
+    outline: none;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+ }
+
+ :root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --text-second-color: #7e7e7e;
+    --navigation-color: rgba(255, 255, 255, 0.5);
+    --navigation-bottom-color: #ffffff;
+    --items-color: #FFFFFF;
+    --hover: #f3f3f3;
+    --btn-color: #000000;
+    --btn-second-color: #e6e6e6;
+    /* --btn-menu: url('../icons/food-icon.png');
+    --btn-spendings: url('../icons/wallet.png');
+    --btn-basket: url('../icons/basket.png'); */
+}
