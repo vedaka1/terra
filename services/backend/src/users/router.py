@@ -1,3 +1,4 @@
+import uuid
 from typing import Optional, List
 
 from fastapi import APIRouter, status, Response, Depends, Request
@@ -52,10 +53,34 @@ async def logout(
     response: Response,
     user: UserModel = Depends(get_current_active_user),
 ):
-    await AuthService.logout(request.cookies.get('refresh_token'))
     response.delete_cookie('access_token')
     response.delete_cookie('refresh_token')
+    await AuthService.logout(request.cookies.get('refresh_token'))
     return {"message": "Logged out successfully"}
+
+
+@auth_router.post("/refresh")
+async def refresh_token(
+    request: Request,
+    response: Response
+) -> Token:
+    new_token = await AuthService.refresh_token(
+        uuid.UUID(request.cookies.get("refresh_token"))
+    )
+
+    response.set_cookie(
+        'access_token',
+        new_token.access_token,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        httponly=True,
+    )
+    response.set_cookie(
+        'refresh_token',
+        new_token.refresh_token,
+        max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 30 * 24 * 60,
+        httponly=True,
+    )
+    return new_token
 
 
 @user_router.get("/me")

@@ -1,15 +1,15 @@
 <template>
   <div class="main-page">
     <div class="main-field">
-      <div class="wrapper">
+      <form class="wrapper">
         <div class="main-description">
           <h1>Terra</h1>
           <h3>Соцсеть</h3>
         </div>
         <div class="inputs">
-          <input type="text" name="username" id="username" placeholder="Username" v-model="username">
-          <input type="password" name="password" id="password" placeholder="Password" v-model="password">
-          <button @click="SignIn">
+          <input type="text" name="username" id="username" placeholder="Username">
+          <input type="password" name="password" id="password" placeholder="Password">
+          <button type="submit">
             Login
           </button>
           <p>or</p>
@@ -17,7 +17,7 @@
             <p>SignUp</p>
           </RouterLink>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -45,13 +45,14 @@
 }
 .main-field {
   padding: 20px;
-  background-color: white;
+  background-color: var(--bg-color);
   width: 400px;
   border-radius: 15px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
-.main-decription {
-  text-align: center;
+.main-description {
+    width: 100%;
+    text-align: center; 
 }
 input {
   margin-bottom: 10px;
@@ -85,33 +86,30 @@ p {
 
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const username = ref("");
-const password = ref("");
 
-const SignIn = async () => {
-  const user = new FormData();
-  user.append('username', username.value);
-  user.append('password', password.value);
-  await axios.post(
-    '/auth/login',
-    user,
-    {headers:
-        {"Access-Control-Allow-Origin": "https://<FE DOMAIN>",},
-        withCredentials: true,
-        }
-)
-.then((response) => {
-    if (response.status == 200) {
-        console.log(response);
+onMounted(async () => {
+  const form = document.querySelector("form");
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = new FormData(form);
+    await axios.post(
+      '/auth/login',
+      user
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        // console.log(response);
+        localStorage.setItem('user', 'authorized')
         router.push("/");
-    }
-}, (error) => {
-    console.log(error);
-});
-}
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  })
+})
 
 </script>

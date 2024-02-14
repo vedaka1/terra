@@ -8,7 +8,7 @@ from .config import settings
 
 engine = create_async_engine(
     url=settings.TEST_DATABASE_URL,
-    echo=True
+    echo=False
 )
 
 bigint = Annotated[int, "bigint"]

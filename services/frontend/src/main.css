@@ -44,13 +44,13 @@ body::-webkit-scrollbar {
     border: none;
     border-radius: 15px;
     width: 100%;
-    background-color: #000000;
+    background-color: var(--btn-color);
     font-size: 16px;
     color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
  }
  button:active {
-   background-color: #131313;
+   background-color: var(--hover);
  }
 
  input {
@@ -72,7 +72,15 @@ body::-webkit-scrollbar {
     --hover: #f3f3f3;
     --btn-color: #000000;
     --btn-second-color: #e6e6e6;
-    /* --btn-menu: url('../icons/food-icon.png');
-    --btn-spendings: url('../icons/wallet.png');
-    --btn-basket: url('../icons/basket.png'); */
+}
+.dark-theme {
+   --bg-color: #141414;
+   --navigation-color: rgba(0, 0, 0, 0.5);
+   --navigation-bottom-color: rgb(0, 0, 0);
+   --text-color: #ffffff;
+   --text-second-color: #b3b3b3;
+   --items-color: #313131;
+   --hover: #414141;
+   --btn-color: #292929;
+   --btn-second-color: #383838;
 }

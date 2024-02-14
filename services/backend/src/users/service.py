@@ -8,6 +8,7 @@ from jose import jwt
 
 from src.database import async_session_factory
 from src.config import settings
+from src.exceptions import TokenExpiredException, InvalidTokenException
 from .dao import UserDAO, RefreshSessionDAO
 from .models import UserModel, RefreshSessionModel
 from .schemas import User, UserCreate, UserCreateDB, Token, RefreshSessionCreate, RefreshSessionUpdate
@@ -53,10 +54,40 @@ class AuthService:
     async def logout(cls, token: uuid.UUID) -> None:
         async with async_session_factory() as session:
             refresh_session = await RefreshSessionDAO.find_one_or_none(session, RefreshSessionModel.refresh_token == token)
-            print(refresh_session.id)
             if refresh_session:
                 await RefreshSessionDAO.delete(session, id=refresh_session.id)
             await session.commit()
+
+    @classmethod
+    async def refresh_token(cls, token: uuid.UUID) -> Token:
+        async with async_session_factory() as session:
+            refresh_session = await RefreshSessionDAO.find_one_or_none(session, RefreshSessionModel.refresh_token == token)
+
+            if refresh_session is None:
+                raise InvalidTokenException
+            if datetime.now(timezone.utc) >= refresh_session.created_at + timedelta(seconds=refresh_session.expires_in):
+                await RefreshSessionDAO.delete(id=refresh_session.id)
+                raise TokenExpiredException
+
+            user = await UserDAO.find_one_or_none(session, id=refresh_session.user_id)
+            if user is None:
+                raise InvalidTokenException
+
+            access_token = cls._create_access_token(user.id)
+            refresh_token_expires = timedelta(
+                days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+            refresh_token = cls._create_refresh_token()
+
+            await RefreshSessionDAO.update(
+                session,
+                RefreshSessionModel.id == refresh_session.id,
+                obj_in=RefreshSessionUpdate(
+                    refresh_token=refresh_token,
+                    expires_in=refresh_token_expires.total_seconds()
+                )
+            )
+            await session.commit()
+        return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
 
     @classmethod
     def _create_access_token(cls, user_id: uuid.UUID) -> str:

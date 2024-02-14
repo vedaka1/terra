@@ -1,19 +1,19 @@
 <template>
     <div class="main-page">
       <div class="main-field">
-        <div class="wrapper">
-          <div class="main-description">
+        <form enctype="application/json" class="wrapper">
+          <div class="main-description" id="11">
             <h1>Terra</h1>
             <h3>Create your account</h3>
           </div>
           <div class="inputs">
-            <input type="text" name="username" id="username" placeholder="Username" v-model="username">
+            <input type="text" name="username" id="username" placeholder="Username">
             <span class="error" id="email-error">Введите действительный адрес</span>
-            <input type="text" name="email" id="email" placeholder="Email" v-model="email">
+            <input type="text" name="email" id="email" placeholder="Email">
             <span class="error" id="pass-error">password must be at leat 7 symbols</span>
-            <input type="password" name="password" id="password" placeholder="Password" v-model="password">
+            <input type="password" name="password" id="password" placeholder="Password">
             <!-- <input type="password" name="password-repeat" id="password-repeat" placeholder="Repeat password" v-model="password"> -->
-            <button @click="SignIn">
+            <button type="submit">
               SignUp
             </button>
             <p>or</p>
@@ -21,7 +21,7 @@
               <p>Go to login</p>
             </RouterLink>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 </template>
@@ -49,12 +49,13 @@
 }
 .main-field {
     padding: 20px;
-    background-color: white;
+    background-color: var(--bg-color);
     width: 400px;
     border-radius: 15px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
-.main-decription {
+.main-description {
+    width: 100%;
     text-align: center; 
 }
 input {
@@ -102,13 +103,10 @@ p {
 </style>
   
 <script setup>
-import axios from 'axios';
-import { ref } from 'vue';
+import axios, { formToJSON } from 'axios';
 import { onMounted } from 'vue';
-
-const username = ref("");
-const email = ref("");
-const password = ref("");
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 onMounted(() => {
     const login_field = document.getElementById('username')
@@ -119,7 +117,7 @@ onMounted(() => {
         if (login_field.value.length <= 1) {
             login_field.style.border = '1px solid rgba(255, 0, 0, 0.5)';
         } else {
-            login_field.style.border = '1px solid rgba(0, 0, 0, 0.1)';
+            login_field.style.border = 'none';
         }
     })
     email_field.addEventListener("input", () => {
@@ -127,7 +125,7 @@ onMounted(() => {
             email_field.style.border = '1px solid rgba(255, 0, 0, 0.5)';
             document.getElementById('email-error').style.display = 'block';
         } else {
-            email_field.style.border = '1px solid rgba(0, 0, 0, 0.1)';
+            email_field.style.border = 'none';
             document.getElementById('email-error').style.display = 'none';
         }
     })
@@ -136,22 +134,23 @@ onMounted(() => {
             password_field.style.border = '1px solid rgba(255, 0, 0, 0.5)';
             document.getElementById('pass-error').style.display = 'block';
         } else {
-            password_field.style.border = '1px solid rgba(0, 0, 0, 0.1)';
+            password_field.style.border = 'none';
             document.getElementById('pass-error').style.display = 'none';
         }
     })
-})
-
-const SignIn = () => {
-    axios.post('/auth/register', {
-        "email": email.value,
-        "username": username.value,
-        "password": password.value
+    const form = document.querySelector("form");
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const user = new FormData(form);
+        await axios.post(
+            '/auth/register',
+            formToJSON(user)
+        )
+        .then(() => {
+            router.push("/login");
+        }, (error) => {
+            console.log(error);
+        });
     })
-    .then((response) => {
-        console.log(response.data);
-    }, (error) => {
-        console.log(error);
-    });
-}
+})
 </script>
