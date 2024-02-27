@@ -22,6 +22,11 @@ const routes = [
     path: '/friends',
     name: 'friends',
     component: () => import('../views/FriendsPage.vue')
+  },
+  {
+    path: '/profile/:id',
+    name: 'profile',
+    component: () => import('../views/ProfilePage.vue')
   }
 ]
 
@@ -35,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
   // const isAuthenticated = axios.get('/user/me', {withCredentials: true});
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         try {
-            await axios.get('/user/me', {withCredentials: true});
+            await axios.get('/users/me', {withCredentials: true});
             next();
         } catch (error) {
             next("/login");

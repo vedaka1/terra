@@ -42,6 +42,17 @@ class UserUpdateDB(UserBase):
     hashed_password: str
     
 
+class Friend(User):
+    pass
+
+class FriendCreateDB(BaseModel):
+    user_id: uuid.UUID
+
+
+class FriendUpdateDB(FriendCreateDB):
+    user_id: Optional[uuid.UUID] = Field(None)
+
+
 class RefreshSessionCreate(BaseModel):
     refresh_token: uuid.UUID
     expires_in: int

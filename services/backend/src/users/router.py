@@ -6,14 +6,14 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from src.exceptions import InvalidCredentialsException, InvalidTokenException, TokenExpiredException
 from src.config import settings
-from .schemas import User, UserCreate, Token
+from .schemas import FriendCreateDB, User, UserCreate, Token, Friend
 from .service import UserService, AuthService
 from .dependencies import get_current_user, get_current_superuser, get_current_active_user
 from .models import UserModel
 
 
 auth_router = APIRouter(prefix='/auth', tags=['Auth'])
-user_router = APIRouter(prefix='/user', tags=['User'])
+user_router = APIRouter(prefix='/users', tags=['Users'])
 
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -96,3 +96,35 @@ async def get_all_users(
     limit: Optional[int] = 100,
 ) -> List[User]:
     return await UserService.get_users_list(offset=offset, limit=limit)
+
+
+@user_router.get("/{user_id}")
+async def get_user(
+    user_id: str
+) -> User:
+    return await UserService.get_user(user_id)
+
+
+@user_router.post("/me/friend")
+async def add_friend(
+    friend_id: str,
+    current_user: UserModel = Depends(get_current_active_user)
+):
+    return await UserService.add_friend(user_id=current_user.id, friend_id=friend_id)
+
+
+@user_router.delete("/me/friend")
+async def delete_friend(
+    friend_id: str,
+    current_user: UserModel = Depends(get_current_active_user)
+) -> None:
+    return await UserService.delete_friend(user_id=current_user.id, friend_id=friend_id)
+
+
+@user_router.get("/me/friends")
+async def get_all_user_friends(
+    offset: Optional[int] = 0,
+    limit: Optional[int] = 100,
+    current_user: UserModel = Depends(get_current_active_user)
+) -> List[Friend]:
+    return await UserService.get_user_friends_list(current_user.id, offset=offset, limit=limit)

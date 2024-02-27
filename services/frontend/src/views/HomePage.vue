@@ -1,13 +1,14 @@
 <template>
   <div class="main-page">
     <div class="wrapper">
-        {{ username }}
+      <div class="user-info">
+        <h2>
+          {{ username }}
+        </h2>  
+      </div>
     </div>
   </div>
 </template>
-
-<style>
-</style>
 
 <script setup>
 import axios from 'axios';
@@ -20,7 +21,7 @@ let username = ref("")
 
 
 onMounted(async () => {
-    await axios.get('/user/me')
+    await axios.get('/users/me')
     .then((response) => {
         username.value = response.data.username
     }, (error) => {
@@ -30,3 +31,13 @@ onMounted(async () => {
 })
 
 </script>
+
+<style scoped>
+.wrapper {
+  background-color: var(--items-color);
+  border-radius: 15px;
+  margin-top: 3rem;
+  align-items: baseline;
+  justify-content: flex-start;
+}
+</style>

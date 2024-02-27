@@ -26,11 +26,12 @@
 .main-page {
 	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
 	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
+	animation: gradient 10s ease infinite;
 	height: 100vh;
 }
 .wrapper {
   justify-content: space-between;
+  width: 100%;
 }
 @keyframes gradient {
 	0% {
@@ -85,9 +86,11 @@ p {
 </style>
 
 <script setup>
+import App from '@/App.vue'
 import axios from 'axios';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { user } from '@/store/user';
 
 const router = useRouter();
 
@@ -95,15 +98,18 @@ onMounted(async () => {
   const form = document.querySelector("form");
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const user = new FormData(form);
+    const userData = new FormData(form);
     await axios.post(
       '/auth/login',
-      user
+      userData
     )
     .then((response) => {
       if (response.status == 200) {
         // console.log(response);
-        localStorage.setItem('user', 'authorized')
+        App
+        // localStorage.setItem('user', 'authorized')
+        user.LogIn()
+        console.log(user.state);
         router.push("/");
       }
     }, (error) => {

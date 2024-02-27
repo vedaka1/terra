@@ -9,3 +9,4 @@ python-jose
 alembic
 pydantic-settings
 python-multipart
+pytest

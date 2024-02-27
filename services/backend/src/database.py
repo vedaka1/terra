@@ -11,9 +11,6 @@ engine = create_async_engine(
     echo=False
 )
 
-bigint = Annotated[int, "bigint"]
-str_256 = Annotated[str, 256]
-
 
 class Base(DeclarativeBase):
     metadata = MetaData()

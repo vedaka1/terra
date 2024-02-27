@@ -1,22 +1,24 @@
 <template>
     <aside>
-        <div class="logo">
-            <img src="../assets/hexagon-svgrepo-com.svg" alt="Logo">
-        </div>
-        <!-- <span>Menu</span> -->
-        <div class="menu-toggle-wrap">
-            
-        </div>
-        <div class="menu">
-            <RouterLink class="button" to="/">
-                <span class="text">Home</span>
-            </RouterLink>
-            <RouterLink class="button" to="/friends">
-                <span class="text">Friends</span>
-            </RouterLink>
-            <button class="button" @click="LogOut">
-                Logout
-            </button>
+        <div class="wrapper">
+            <div class="logo">
+                <img src="../assets/hexagon-svgrepo-com.svg" alt="Logo">
+            </div>
+            <!-- <span>Menu</span> -->
+            <div class="menu-toggle-wrap">
+                
+            </div>
+            <div class="menu">
+                <RouterLink class="button" to="/">
+                    <span class="text">Home</span>
+                </RouterLink>
+                <RouterLink class="button" to="/friends">
+                    <span class="text">Friends</span>
+                </RouterLink>
+                <button class="button" @click="LogOut">
+                    Logout
+                </button>
+            </div>
         </div>
     </aside>
 </template>
@@ -27,7 +29,24 @@ aside {
     align-items: center;
     width: 100%;
     height: 3rem;
-    background-color: var(--navigation-color);
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(15px);
+    z-index: 10;
+    /* background-color: var(--navigation-color); */
+}
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100%;
+    width: 60%;
+}
+img {
+    height: 3rem;
+    width: 3rem;
 }
 .logo {
     display: flex;
@@ -47,9 +66,7 @@ aside {
 .router-link-exact-active {
     padding: 5px;
     border-radius: 15px;
-    background: rgb(131,58,180);
     background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(92,29,253,1) 50%, rgba(69,134,252,1) 100%);
-    transition: 0.1s ease-out;
 }
 a {
     outline: none;
@@ -61,14 +78,15 @@ a {
 <script setup>
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-
+import { user } from '@/store/user';
 
 const router = useRouter()
 
 const LogOut = async () => {
     await axios.post('/auth/logout')
     .then(() => {
-        localStorage.removeItem('user')
+        // localStorage.removeItem('user')
+        user.LogOut()
         router.push("/login");
     }, (error) => {
     console.log(error);

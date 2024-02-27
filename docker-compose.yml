@@ -3,8 +3,7 @@ version: '3.8'
 services:
 
   backend:
-    # depends_on:
-    #   - postgres
+    container_name: backend
     build: ./services/backend
     ports:
       - 5000:5000
@@ -13,6 +12,7 @@ services:
     command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
 
   frontend:
+    container_name: frontend
     build: ./services/frontend
     volumes:
       - './services/frontend:/app'
@@ -21,6 +21,7 @@ services:
       - 8080:8080
 
   db:
+    container_name: database
     image: postgres:15.1
     environment:
       - POSTGRES_DB=terra

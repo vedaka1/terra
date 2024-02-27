@@ -9,7 +9,7 @@ from jose import jwt
 from src.database import async_session_factory
 from src.config import settings
 from src.exceptions import TokenExpiredException, InvalidTokenException
-from .dao import UserDAO, RefreshSessionDAO
+from .dao import UserDAO, RefreshSessionDAO, FriendDAO
 from .models import UserModel, RefreshSessionModel
 from .schemas import User, UserCreate, UserCreateDB, Token, RefreshSessionCreate, RefreshSessionUpdate
 from .utils import get_password_hash, is_valid_password
@@ -144,3 +144,36 @@ class UserService:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Users not found")
         return users
+    
+    @classmethod
+    async def add_friend(cls, user_id: uuid.UUID, friend_id: uuid.UUID):
+        async with async_session_factory() as session:
+            friend_exist = await FriendDAO.find_one_or_none(session, friend_id=friend_id)
+            if friend_exist:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT, detail="You are already friends with this user")
+            result = await FriendDAO.add(
+                session,
+                {'user_id': user_id, 'friend_id': friend_id})
+            await session.commit()
+        return result
+    
+    @classmethod
+    async def delete_friend(cls, user_id: uuid.UUID, friend_id: uuid.UUID):
+        async with async_session_factory() as session:
+            result = await FriendDAO.delete(
+                session,
+                user_id=user_id,
+                friend_id=friend_id
+            )
+            await session.commit()
+        return result
+    
+    @classmethod
+    async def get_user_friends_list(cls, user_id: uuid.UUID, offset: int = 0, limit: int = 100, **filter_by) -> list[UserModel]:
+        async with async_session_factory() as session:
+            friends = await FriendDAO.find_all_user_friends(session, user_id=user_id, offset=offset, limit=limit, **filter_by)
+            if friends is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="friends not found")     
+        return friends
