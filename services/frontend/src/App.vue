@@ -1,6 +1,6 @@
 <template>
     <div class="main-page">
-        <NavBar v-if="user.state" />
+        <NavBar v-if="isAuthorized" />
         <router-view/>
     </div>
 </template>
@@ -9,9 +9,13 @@
 </style>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import NavBar from './components/NavBar.vue';
-import { user } from './store/user'
+// import { user } from './store/user'
+const isAuthorized = ref('')
+// user.LogIn()
+onMounted(async () => {
+    isAuthorized.value = localStorage.getItem('user')
+});
 
-user.LogIn()
-// let isAuthorized = localStorage.getItem('user')
 </script>

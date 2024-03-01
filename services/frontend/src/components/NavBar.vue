@@ -42,11 +42,13 @@ aside {
     flex-direction: row;
     justify-content: space-between;
     height: 100%;
-    width: 60%;
+    max-width: 800px;
+    padding: 0;
 }
 img {
     height: 3rem;
     width: 3rem;
+    background-clip: border-box;
 }
 .logo {
     display: flex;
@@ -85,7 +87,7 @@ const router = useRouter()
 const LogOut = async () => {
     await axios.post('/auth/logout')
     .then(() => {
-        // localStorage.removeItem('user')
+        localStorage.removeItem('user')
         user.LogOut()
         router.push("/login");
     }, (error) => {

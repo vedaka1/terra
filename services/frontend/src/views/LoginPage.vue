@@ -45,9 +45,10 @@
 	}
 }
 .main-field {
-  padding: 20px;
+  margin: 10px;
+  padding: 1rem;
   background-color: var(--bg-color);
-  width: 400px;
+  max-width: 400px;
   border-radius: 15px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
@@ -86,7 +87,6 @@ p {
 </style>
 
 <script setup>
-import App from '@/App.vue'
 import axios from 'axios';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -106,11 +106,10 @@ onMounted(async () => {
     .then((response) => {
       if (response.status == 200) {
         // console.log(response);
-        App
-        // localStorage.setItem('user', 'authorized')
+        localStorage.setItem('user', 'authorized')
+        router.push("/");
         user.LogIn()
         console.log(user.state);
-        router.push("/");
       }
     }, (error) => {
       console.log(error);

@@ -2,6 +2,7 @@ services/frontend/.DS_Store
 services/frontend/node_modules
 services/frontend/dist
 services/backend/.vs
+services/backend/src/migrations/versions/*
 
 # local env files
 .env.local

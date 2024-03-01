@@ -29,7 +29,8 @@ body::-webkit-scrollbar {
  
  .wrapper {
     margin: 0;
-    width: 60%;
+    width: 100%;
+    max-width: 800px;
     height: 100%;
     padding: 10px;
     display: flex;

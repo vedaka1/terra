@@ -68,7 +68,7 @@ const showUsers = async () => {
     margin-top: 1rem;
     border-radius: 15px;
     padding: 0.5rem;
-    min-width: 200px;
+    min-width: 300px;
     background-color: var(--items-color);
     display: flex;
     align-items: center;

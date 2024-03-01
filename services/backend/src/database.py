@@ -7,7 +7,7 @@ from .config import settings
 
 
 engine = create_async_engine(
-    url=settings.TEST_DATABASE_URL,
+    url=settings.DB_URL,
     echo=False
 )
 

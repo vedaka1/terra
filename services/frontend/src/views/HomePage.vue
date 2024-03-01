@@ -4,7 +4,8 @@
       <div class="user-info">
         <h2>
           {{ username }}
-        </h2>  
+        </h2>
+        
       </div>
     </div>
   </div>
