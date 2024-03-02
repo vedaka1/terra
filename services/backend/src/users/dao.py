@@ -1,18 +1,28 @@
 from typing import List
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload, joinedload, aliased
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.dao import BaseDAO
-from .models import UserModel, RefreshSessionModel, user_to_user
-from .schemas import UserCreateDB, UserUpdateDB, RefreshSessionCreate, RefreshSessionUpdate, FriendCreateDB, FriendUpdateDB
+
+from .models import RefreshSessionModel, UserModel, user_to_user
+from .schemas import (
+    FriendCreateDB,
+    FriendUpdateDB,
+    RefreshSessionCreate,
+    RefreshSessionUpdate,
+    UserCreateDB,
+    UserUpdateDB,
+)
+
 
 class UserDAO(BaseDAO[UserModel, UserCreateDB, UserUpdateDB]):
     model = UserModel
 
 
-class RefreshSessionDAO(BaseDAO[RefreshSessionModel, RefreshSessionCreate, RefreshSessionUpdate]):
+class RefreshSessionDAO(
+    BaseDAO[RefreshSessionModel, RefreshSessionCreate, RefreshSessionUpdate]
+):
     model = RefreshSessionModel
 
 

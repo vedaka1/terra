@@ -6,8 +6,8 @@ from jose import jwt
 
 from ..config import settings
 from ..exceptions import InvalidTokenException
-from .models import UserModel
-from .service import UserService
+from ..users.models import UserModel
+from ..users.service import UserService
 from .utils import OAuth2PasswordBearerWithCookie
 
 oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/api/auth/login")

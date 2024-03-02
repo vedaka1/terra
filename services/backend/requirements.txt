@@ -10,3 +10,5 @@ alembic
 pydantic-settings
 python-multipart
 pytest
+pytest-dotenv
+pytest-asyncio

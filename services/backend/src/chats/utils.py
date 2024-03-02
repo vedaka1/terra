@@ -4,9 +4,6 @@ from fastapi import HTTPException, Request, status
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.security import OAuth2
 from fastapi.security.utils import get_authorization_scheme_param
-from passlib.context import CryptContext
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class OAuth2PasswordBearerWithCookie(OAuth2):
@@ -36,11 +33,3 @@ class OAuth2PasswordBearerWithCookie(OAuth2):
             else:
                 return None
         return param
-
-
-def is_valid_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)

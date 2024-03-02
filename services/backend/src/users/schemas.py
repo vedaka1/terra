@@ -40,10 +40,16 @@ class UserCreateDB(UserBase):
 
 class UserUpdateDB(UserBase):
     hashed_password: str
-    
+
+
+class UserToUser(BaseModel):
+    user_id: uuid.UUID
+    friend_id: uuid.UUID
+
 
 class Friend(User):
     pass
+
 
 class FriendCreateDB(BaseModel):
     user_id: uuid.UUID
