@@ -33,7 +33,7 @@ onMounted(async () => {
 })
 
 const addFriend = async (user_id) => {
-    await axios.post('/users/me/friend', null, {params: {friend_id: user_id}})
+    await axios.post('/users/me/friends', null, {params: {friend_id: user_id}})
     .then((response) => {
         console.log(response);
     })
@@ -43,7 +43,7 @@ const addFriend = async (user_id) => {
 }
 
 const deleteFriend = async (user_id) => {
-    await axios.delete('/users/me/friend', {params: {friend_id: user_id}})
+    await axios.delete('/users/me/friends' + user_id)
     .then((response) => {
         console.log(response);
     })
@@ -53,7 +53,7 @@ const deleteFriend = async (user_id) => {
 }
 
 const showUsers = async () => {
-    await axios.get('/users/all', {params: {offset: 0}})
+    await axios.get('/users', {params: {offset: 0}})
     .then((response) => {
         state.value = true
         users.value = response.data
