@@ -13,14 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
     - uses: actions/checkout@v3
-    - name: create .env.test
+    - name: Prepare Database
       shell: bash
-      env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      run: cd ./services/backend && echo "MODE=TEST\nDB_HOST=localhost\nDB_PORT=5432\nDB_USER=vedaka1\nDB_PASS=1234qwer\nDB_NAME=terra\nSECRET_KEY=$SECRET_KEY\n" >> .env.test
-    
-    - name: test
-      shell: bash
-      run: cat ./services/backend/.env.dev
-    
+      run: docker run --name test-db -e POSTGRES_DB=terra -e POSTGRES_USER=vedaka1 -e POSTGRES_PASSWORD=mysecretpassword -d postgres:15.1
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r ./services/backend/requirements.txt
+
+    - name: Run tests
+      run: pytest -s ./services/backend
