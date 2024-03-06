@@ -10,7 +10,7 @@ class TestChats:
         assert response.status_code == 200
         assert response.json()["name"] == "test"
 
-    async def test_get_chats_list(self, client: AsyncClient):
+    async def test_get_user_chats_list(self, client: AsyncClient):
         response = await client.get("/chats")
         assert isinstance(response.json(), list)
         for data in response.json():
@@ -31,7 +31,6 @@ class TestChats:
         assert response.status_code == 200
         response = await client.get("/chats/1/messages")
         assert isinstance(response.json(), list)
-        print(response.text)
         for data in response.json():
             assert data["content"] == "Привет!"
             assert isinstance(data, dict)

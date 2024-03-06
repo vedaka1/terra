@@ -40,8 +40,6 @@ class TestUser:
     async def test_delete_friend(self, client: AsyncClient):
         response = await client.get("/users/me/friends")
         assert response.status_code == 200
-        friend = response.json()[0]
-        response = await client.delete(
-            f"/users/me/friends/{friend["id"]}"
-        )
+        friend: dict = response.json()[0]
+        response = await client.delete(f"/users/me/friends/{friend['id']}")
         assert response.status_code == 200

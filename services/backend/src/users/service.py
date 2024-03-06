@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timedelta, timezone
-from typing import Dict, Optional
+from typing import Optional
 
 from fastapi import HTTPException, status
 from jose import jwt
@@ -11,7 +11,7 @@ from src.database import async_session_factory
 from src.exceptions import InvalidTokenException, TokenExpiredException
 
 from .dao import FriendDAO, RefreshSessionDAO, UserDAO
-from .models import RefreshSessionModel, UserModel, user_to_user
+from .models import RefreshSessionModel, UserModel
 from .schemas import (
     RefreshSessionCreate,
     RefreshSessionUpdate,

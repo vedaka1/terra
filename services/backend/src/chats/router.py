@@ -23,7 +23,7 @@ async def create_chat(
 
 
 @chat_router.get("")
-async def get_all_chats(
+async def get_all_user_chats(
     offset: Optional[int] = 0,
     limit: Optional[int] = 100,
     current_user: UserModel = Depends(get_current_active_user),

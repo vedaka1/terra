@@ -5,7 +5,6 @@ services/backend/.vs
 services/backend/src/migrations/versions/*
 
 # local env files
-.env.test
 .env.deploy
 .env.local
 .env.*.local

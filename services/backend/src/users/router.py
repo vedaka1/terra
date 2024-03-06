@@ -13,7 +13,7 @@ from src.exceptions import (
 
 from .dependencies import get_current_active_user
 from .models import UserModel
-from .schemas import Friend, FriendCreateDB, Token, User, UserCreate, UserToUser
+from .schemas import Friend, FriendCreateDB, Token, User, UserCreate
 from .service import AuthService, UserService
 
 auth_router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -22,7 +22,7 @@ user_router = APIRouter(prefix="/users", tags=["Users"])
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(user: UserCreate) -> User:
-    return await UserService.register_new_user(user)  # type: ignore
+    return await UserService.register_new_user(user)
 
 
 @auth_router.post("/login")
