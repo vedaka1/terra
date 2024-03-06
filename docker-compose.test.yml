@@ -5,8 +5,12 @@ services:
   test_db:
     container_name: test_database
     image: postgres:15.1
-    env_file:
-      - ./services/backend/.env.test
+    # env_file:
+    #   - ./services/backend/.env.test
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=terra
     ports:
       - 5432:5432
 
