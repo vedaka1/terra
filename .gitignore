@@ -6,6 +6,7 @@ services/backend/src/migrations/versions/*
 
 # local env files
 .env.deploy
+.env.dev
 .env.local
 .env.*.local
 .env
