@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: create .env.test
+      shell: bash
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: cd ./services/backend &% echo "MODE=TEST\nDB_HOST=localhost\nDB_PORT=5432\nDB_USER=vedaka1\nDB_PASS=1234qwer\nDB_NAME=terra\nSECRET_KEY=$SECRET_KEY\n" >> .env.test
+    
+    - name: test
+      shell: bash
+      run: cat .env.env
+    
