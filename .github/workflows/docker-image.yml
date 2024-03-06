@@ -18,7 +18,7 @@ jobs:
       shell: bash
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      run: cd ./services/backend &% echo "MODE=TEST\nDB_HOST=localhost\nDB_PORT=5432\nDB_USER=vedaka1\nDB_PASS=1234qwer\nDB_NAME=terra\nSECRET_KEY=$SECRET_KEY\n" >> .env.test
+      run: cd ./services/backend && echo "MODE=TEST\nDB_HOST=localhost\nDB_PORT=5432\nDB_USER=vedaka1\nDB_PASS=1234qwer\nDB_NAME=terra\nSECRET_KEY=$SECRET_KEY\n" >> .env.test
     
     - name: test
       shell: bash
