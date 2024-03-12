@@ -13,3 +13,4 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY src/ .
+RUN chmod a+x /app/src/app.sh

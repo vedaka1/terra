@@ -5,7 +5,6 @@ from sqlalchemy import delete, insert, select, update
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import func
-
 from src.database import Base
 
 ModelType = TypeVar("ModelType", bound=Base)

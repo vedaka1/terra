@@ -23,9 +23,8 @@ from src.database import Base
 user_to_chat = Table(
     "user_to_chat",
     Base.metadata,
-    Column("user_id", UUID, ForeignKey("fastapi.user.id")),
-    Column("chat_id", Integer, ForeignKey("fastapi.chat.id")),
-    schema="fastapi",
+    Column("user_id", UUID, ForeignKey("user.id")),
+    Column("chat_id", Integer, ForeignKey("chat.id")),
 )
 
 
@@ -35,7 +34,7 @@ class ChatModel(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(nullable=False)
     owner_id: Mapped[uuid.UUID] = mapped_column(
-        sa.ForeignKey(f"fastapi.user.id", ondelete="CASCADE")
+        sa.ForeignKey(f"user.id", ondelete="CASCADE")
     )
     created_at: Mapped[datetime] = mapped_column(
         sa.TIMESTAMP(timezone=True), server_default=func.now()
@@ -46,11 +45,9 @@ class MessageModel(Base):
     __tablename__ = "message"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    chat_id: Mapped[int] = mapped_column(
-        sa.ForeignKey(f"fastapi.chat.id", ondelete="CASCADE")
-    )
+    chat_id: Mapped[int] = mapped_column(sa.ForeignKey(f"chat.id", ondelete="CASCADE"))
     user_id: Mapped[uuid.UUID] = mapped_column(
-        sa.ForeignKey(f"fastapi.user.id", ondelete="CASCADE")
+        sa.ForeignKey(f"user.id", ondelete="CASCADE")
     )
     created_at: Mapped[datetime] = mapped_column(
         sa.TIMESTAMP(timezone=True), server_default=func.now()

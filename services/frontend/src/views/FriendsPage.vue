@@ -2,13 +2,13 @@
     <div class="main-page">
         <div class="wrapper">
             <button @click="showUsers()">Show all users</button>
-            <div class="user-card" v-for="user in users" :key="user.id">
+            <div class="user-card" v-for="user in users" :key="user.id" :id="user.id">
                 <RouterLink :to="{name: 'profile', params: {id: user.id}}">
                     {{ user.username }}
                 </RouterLink>
                 <div class="buttons-row">
-                    <button class="button-add" @click="addFriend(user.id)">&plus;</button>
-                    <button v-if="!state" class="button-delete" @click="deleteFriend(user.id)">&Cross;</button>
+                    <button v-if="!user.isFriend" class="button-add" @click="addFriend(user.id)">&plus;</button>
+                    <button v-if="user.isFriend" class="button-delete" @click="deleteFriend(user.id)">&Cross;</button>
                 </div>
             </div>
         </div>
@@ -21,21 +21,23 @@ import { onMounted, ref } from 'vue';
 
 
 const users = ref([])
-const state = ref()
-
+let friends = []
 
 onMounted(async () => {
     // console.log(await axios.get('/user/me/friends', {params: {offset: 0}}));
-    let friends = (await axios.get('/users/me/friends', {params: {offset: 0}})).data
-    state.value = false
-    console.log(friends);
+    await axios.get('/users/me/friends', {params: {offset: 0}})
+    .then((response) => {
+        friends = response.data
+        friends.forEach(user => {
+            user.isFriend = true
+        });
+    })
     users.value = friends
 })
 
 const addFriend = async (user_id) => {
     await axios.post('/users/me/friends', null, {params: {friend_id: user_id}})
     .then((response) => {
-        console.log(response);
     })
     .catch((error) => {
         console.log(error);
@@ -43,9 +45,12 @@ const addFriend = async (user_id) => {
 }
 
 const deleteFriend = async (user_id) => {
-    await axios.delete('/users/me/friends' + user_id)
+    await axios.delete('/users/me/friends/' + user_id)
     .then((response) => {
-        console.log(response);
+        document.getElementById(user_id).classList.add('hide-item');
+            setTimeout(() => {
+                document.getElementById(user_id).style.display = 'none';
+            }, 1000);
     })
     .catch((error) => {
         console.log(error);
@@ -55,8 +60,15 @@ const deleteFriend = async (user_id) => {
 const showUsers = async () => {
     await axios.get('/users', {params: {offset: 0}})
     .then((response) => {
-        state.value = true
-        users.value = response.data
+        let usersData = response.data
+        for (let i = usersData.length - 1; i >= 0; i--) {
+            const user = usersData[i]
+            const found = friends.find(friend => friend.id === user.id);
+            if (found) {
+                usersData.splice(i, 1)
+            }
+        }
+        users.value = usersData
     })
 }
 

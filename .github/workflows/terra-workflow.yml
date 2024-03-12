@@ -1,4 +1,4 @@
-name: FastAPI Tests
+name: Terra API tests
 
 on:
   push:
@@ -9,20 +9,18 @@ on:
 jobs:
 
   test:
-
     runs-on: ubuntu-latest
-
     steps:
     
     - uses: actions/checkout@v3
     - name: Prepare Database
-      shell: bash
       run: docker run --name test-db -e POSTGRES_DB=terra -e POSTGRES_USER=username -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:15.1
       
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

@@ -15,6 +15,9 @@
                 <RouterLink class="button" to="/friends">
                     <span class="text">Friends</span>
                 </RouterLink>
+                <RouterLink class="button" to="/messages">
+                    <span class="text">Messages</span>
+                </RouterLink>
                 <button class="button" @click="LogOut">
                     Logout
                 </button>

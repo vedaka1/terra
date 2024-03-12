@@ -7,15 +7,13 @@ from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-
 from src.database import Base
 
 user_to_user = Table(
     "user_to_user",
     Base.metadata,
-    Column("user_id", UUID, ForeignKey("fastapi.user.id")),
-    Column("friend_id", UUID, ForeignKey("fastapi.user.id")),
-    schema="fastapi",
+    Column("user_id", UUID, ForeignKey("user.id")),
+    Column("friend_id", UUID, ForeignKey("user.id")),
 )
 
 
@@ -61,5 +59,5 @@ class RefreshSessionModel(Base):
         sa.TIMESTAMP(timezone=True), server_default=func.now()
     )
     user_id: Mapped[uuid.UUID] = mapped_column(
-        sa.ForeignKey(f"fastapi.user.id", ondelete="CASCADE")
+        sa.ForeignKey(f"user.id", ondelete="CASCADE")
     )

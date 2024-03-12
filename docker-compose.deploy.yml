@@ -3,6 +3,8 @@ version: '3.8'
 services:
 
   backend:
+    depends_on:
+      - db
     container_name: backend
     build: ./services/backend
     ports:
@@ -11,16 +13,13 @@ services:
       - ./services/backend:/app
     command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
 
-  frontend:
-    container_name: frontend
+  nginx-terra:
+    container_name: nginx-terra
     build:
       context: ./services/frontend
-      dockerfile: ./Dockerfile.dev
-    volumes:
-      - './services/frontend:/app'
-      - '/app/node_modules'
+      dockerfile: ./Dockerfile 
     ports:
-      - 8080:8080
+      - 8080:80
 
   db:
     container_name: database
