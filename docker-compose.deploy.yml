@@ -6,6 +6,7 @@ services:
     depends_on:
       - db
     container_name: backend
+    network_mode: "host"
     build: ./services/backend
     ports:
       - 5000:5000
@@ -15,6 +16,7 @@ services:
 
   nginx-terra:
     container_name: nginx-terra
+    network_mode: "host"
     build:
       context: ./services/frontend
       dockerfile: ./Dockerfile 
@@ -23,6 +25,7 @@ services:
 
   db:
     container_name: database
+    network_mode: "host"
     image: postgres:15.1
     env_file:
       - ./services/backend/.env

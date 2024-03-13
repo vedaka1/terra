@@ -8,7 +8,6 @@ from src.chats.router import chat_router
 from src.database import Base, engine
 from src.users.router import auth_router, user_router
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
@@ -26,8 +25,12 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:8080",
+        "http://localhost:80",
         "http://176.109.106.9:8080",
+        "http://176.109.106.9:80",
+        "http://176.109.106.9",
         "http://172.29.24.31:8080",
+        "http://172.29.24.31:80",
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "HEAD", "OPTIONS", "DELETE"],

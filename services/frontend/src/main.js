@@ -6,7 +6,7 @@ import axios from 'axios'
 import { user } from '@/store/user'
 
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:5000/' // FastApi backend
+axios.defaults.baseURL = 'http://176.109.106.9:5000/' // FastApi backend
 
 axios.interceptors.response.use(undefined, async (error) => {
   if (error) {
