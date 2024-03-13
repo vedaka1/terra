@@ -105,7 +105,6 @@ onMounted(async () => {
     )
     .then((response) => {
       if (response.status == 200) {
-        // console.log(response);
         localStorage.setItem('user', 'authorized')
         router.push("/");
         user.LogIn()
