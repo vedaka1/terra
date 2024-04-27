@@ -22,7 +22,7 @@ class ChatService:
         return chat
 
     @classmethod
-    async def delete_chat(cls, id: int, user_id: uuid.UUID) -> ChatModel:
+    async def delete_chat(cls, id: int, user_id: uuid.UUID) -> None:
         async with async_session_factory() as session:
             chat = await ChatDAO.delete(session, owner_id=user_id, id=id)
             await session.commit()

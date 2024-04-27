@@ -8,7 +8,7 @@
           </div>
           <div class="inputs">
             <input type="text" name="username" id="username" placeholder="Username">
-            <span class="error" id="email-error">Введите действительный адрес</span>
+            <span class="error" id="email-error">Введите почту в формате test@test.com</span>
             <input type="text" name="email" id="email" placeholder="Email">
             <span class="error" id="pass-error">password must be at leat 7 symbols</span>
             <input type="password" name="password" id="password" placeholder="Password">
@@ -34,6 +34,7 @@
     height: 100vh;
 }
 .wrapper {
+    width: 100%;
     justify-content: space-between;
 }
 @keyframes gradient {
@@ -103,12 +104,17 @@ p {
 </style>
   
 <script setup>
-import axios, { formToJSON } from 'axios';
+import { useAuthStore } from '@/store/auth';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
+const authStore = useAuthStore();
+
 onMounted(() => {
+    if (authStore.user) {
+        router.push('/');
+    }
     const login_field = document.getElementById('username')
     const email_field = document.getElementById('email')
     const password_field = document.getElementById('password')
@@ -142,15 +148,7 @@ onMounted(() => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const user = new FormData(form);
-        await axios.post(
-            '/auth/register',
-            formToJSON(user)
-        )
-        .then(() => {
-            router.push("/login");
-        }, (error) => {
-            console.log(error);
-        });
+        authStore.register(user)
     })
 })
-</script>
+</script>@/store/auth

@@ -49,60 +49,84 @@ body::-webkit-scrollbar {
    /* 50% {opacity: 0.8;} */
    100% {opacity: 1;}
 }
-
- .wrapper {
-    margin: 0;
-    width: 100%;
-    max-width: 800px;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
- }
-
- button {
-    padding: 0.7rem;
-    outline: none;
-    border: none;
-    border-radius: 15px;
-    width: 100%;
-    background-color: var(--btn-color);
-    font-size: 16px;
-    color: white;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
- }
- button:active {
+.wrapper {
+   margin: 0;
+   width: 100%;
+   max-width: 800px;
+   height: 100%;
+   padding: 10px;
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   align-items: center;
+}
+button {
+   padding: 0.7rem;
+   outline: none;
+   border: none;
+   border-radius: 15px;
+   width: 100%;
+   background-color: var(--btn-color);
+   font-size: 16px;
+   color: white;
+   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+button:active {
    background-color: var(--hover);
- }
+}
 
- button:hover {
+button:hover {
    background-color: var(--hover);
- }
+}
+.button-add {
+   color: #4fff5d;
+   font-size: 30px;
+   padding: 0;
+   width: 3rem;
+   height: 3rem;
+}
+.button-delete {
+   color: #ff4343;
+   font-size: 30px;
+   padding: 0;
+   width: 3rem;
+   height: 3rem;
+}
+input {
+   width: 100%;
+   border-radius: 15px;
+   padding: 0.7rem;
+   font-size: 16px;
+   outline: none;
+   border: none;
+   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+textarea {
+   width: 100%;
+   border-radius: 15px;
+   padding: 0.7rem;
+   font-size: 16px;
+   outline: none;
+   border: none;
+   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
 
- input {
-    width: 100%;
-    border-radius: 15px;
-    padding: 0.7rem;
-    outline: none;
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
- }
-
- :root {
-    --bg-color: #ffffff;
-    --text-color: #000000;
-    --text-second-color: #7e7e7e;
-    --navigation-color: rgba(255, 255, 255, 0.5);
-    --navigation-bottom-color: #ffffff;
-    --items-color: #FFFFFF;
-    --hover: #f3f3f3;
-    --btn-color: #000000;
-    --btn-second-color: #e6e6e6;
+:root {
+   --bg-color: #ffffff;
+   --bg-second-color: #cccccc;
+   --text-color: #000000;
+   --text-second-color: #7e7e7e;
+   --navigation-color: rgba(255, 255, 255, 0.5);
+   --navigation-bottom-color: #ffffff;
+   --items-color: #FFFFFF;
+   --hover: #f3f3f3;
+   --btn-color: #000000;
+   --btn-second-color: #e6e6e6;
+   --box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px
 }
 .dark-theme {
    --bg-color: #181818;
+   --bg-second-color: #383838;
    --navigation-color: rgba(0, 0, 0, 0.5);
    --navigation-bottom-color: rgb(0, 0, 0);
    --text-color: #ffffff;
@@ -111,4 +135,13 @@ body::-webkit-scrollbar {
    --hover: #414141;
    --btn-color: #292929;
    --btn-second-color: #383838;
+   --box-shadow: rgba(100, 100, 100, 0.1) 0px 4px 12px
+}
+a:active,
+a:hover,
+a::after {
+   text-decoration: none;
+   background-color: none;
+   color: none;
+   -webkit-tap-highlight-color: transparent;
 }

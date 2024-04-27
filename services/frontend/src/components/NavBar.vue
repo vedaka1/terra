@@ -1,5 +1,5 @@
 <template>
-    <aside>
+    <aside v-show="authStore.user">
         <div class="wrapper">
             <div class="logo">
                 <img src="../assets/hexagon-svgrepo-com.svg" alt="Logo">
@@ -15,10 +15,10 @@
                 <RouterLink class="button" to="/friends">
                     <span class="text">Friends</span>
                 </RouterLink>
-                <RouterLink class="button" to="/messages">
+                <RouterLink class="button" to="/chats">
                     <span class="text">Messages</span>
                 </RouterLink>
-                <button class="button" @click="LogOut">
+                <button class="button" @click="authStore.logout()">
                     Logout
                 </button>
             </div>
@@ -49,9 +49,9 @@ aside {
     padding: 0;
 }
 img {
-    height: 3rem;
-    width: 3rem;
-    background-clip: border-box;
+    /* height: 3rem;
+    width: 3rem; */
+    
 }
 .logo {
     display: flex;
@@ -78,23 +78,18 @@ a {
     text-decoration: none;
     color: var(--text-color);
 }
+a:active,
+a:hover,
+a::after {
+    text-decoration: none;
+    background-color: none;
+    color: none;
+    -webkit-tap-highlight-color: transparent;
+}
 </style>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import axios from 'axios';
-import { user } from '@/store/user';
+import { useAuthStore } from '@/store/auth';
 
-const router = useRouter()
-
-const LogOut = async () => {
-    await axios.post('/auth/logout')
-    .then(() => {
-        localStorage.removeItem('user')
-        user.LogOut()
-        router.push("/login");
-    }, (error) => {
-    console.log(error);
-    }); 
-}
+const authStore = useAuthStore();
 </script>

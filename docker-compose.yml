@@ -1,15 +1,28 @@
 version: '3.8'
 
+name: terra
+
 services:
 
   backend:
+    depends_on:
+      postgres:
+        condition: service_healthy
     container_name: backend
+    env_file:
+      - ./services/backend/.env
     build: ./services/backend
+    expose:
+      - 5000
     ports:
       - 5000:5000
     volumes:
       - ./services/backend:/app
+    networks:
+      - interconnect
+      - postgres.network
     command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
+
 
   frontend:
     container_name: frontend
@@ -21,16 +34,35 @@ services:
       - '/app/node_modules'
     ports:
       - 8080:8080
+    networks:
+      - interconnect
 
-  db:
+  postgres:
     container_name: database
     image: postgres:15.1
+    hostname: postgres
     env_file:
       - ./services/backend/.env
+    expose:
+      - "5432"
     ports:
-      - 5432:5432
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - interconnect
+      - postgres.network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
 
 volumes:
   postgres_data:
+
+networks:
+  interconnect:
+    driver: bridge
+  postgres.network: {}

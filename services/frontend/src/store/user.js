@@ -1,14 +1,14 @@
-import { reactive } from "vue";
+import { defineStore } from "pinia";
 
-const user = reactive({
-    state: null,
-    LogOut() {
-        this.state = false
-    },
-    LogIn () {
-        this.state = true
+export const useUserStore = defineStore('user', {
+    state: () => ({
+        user: JSON.parse(localStorage.getItem('user')) || null,
+    }),
+    actions: {
+        async me() {
+            const user = await axios.get('/users/me');
+            this.user = user.data;
+            localStorage.setItem('user', JSON.stringify(user));
+        }
     }
 })
-
-
-export { user }

@@ -87,33 +87,23 @@ p {
 </style>
 
 <script setup>
-import axios from 'axios';
+import router from '@/router';
+import { useAuthStore } from '@/store/auth';
 import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { user } from '@/store/user';
 
-const router = useRouter();
+
+const authStore = useAuthStore();
+
 
 onMounted(async () => {
+  if (authStore.user) {
+    router.push('/');
+  };
   const form = document.querySelector("form");
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const userData = new FormData(form);
-    await axios.post(
-      '/auth/login',
-      userData
-    )
-    .then((response) => {
-      if (response.status == 200) {
-        localStorage.setItem('user', 'authorized')
-        router.push("/");
-        user.LogIn()
-        console.log(user.state);
-      }
-    }, (error) => {
-      console.log(error);
-    });
-  })
+    authStore.login(userData);
+  });
 })
-
-</script>
+</script>@/store/auth

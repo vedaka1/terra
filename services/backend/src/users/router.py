@@ -28,7 +28,7 @@ async def register(user: UserCreate) -> User:
 @auth_router.post("/login")
 async def login(
     response: Response, credentials: OAuth2PasswordRequestForm = Depends()
-) -> Token:
+) -> User:
     user = await AuthService.authenticate_user(
         credentials.username, credentials.password
     )
@@ -47,7 +47,7 @@ async def login(
         max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 30 * 24 * 60,
         httponly=True,
     )
-    return token
+    return user
 
 
 @auth_router.post("/logout")

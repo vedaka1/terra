@@ -12,7 +12,6 @@ from src.users.router import auth_router, user_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
-        await conn.execute(text("CREATE SCHEMA IF NOT EXISTS fastapi;"))
         # await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
     yield

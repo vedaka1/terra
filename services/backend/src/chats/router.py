@@ -1,9 +1,18 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Request, Response, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    Request,
+    Response,
+    WebSocket,
+    WebSocketDisconnect,
+    status,
+)
 
 from src.chats.schemas import Chat, Message
 from src.chats.service import ChatService, MessageService
+from src.chats.utils import manager
 from src.users.models import UserModel
 
 from .dependencies import (
@@ -59,3 +68,20 @@ async def get_chat_messages(
     return await MessageService.get_chat_messages_list(
         chat_id, offset=offset, limit=limit
     )
+
+
+@chat_router.websocket("/ws/{chat_id}")
+async def websocket_endpoint(
+    websocket: WebSocket,
+    chat_id: int,
+    # user: UserModel = Depends(get_current_active_user),
+):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.send_personal_message(f"You wrote: {data}", websocket)
+            await manager.broadcast(f"Client #{data} says: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast(f"Client #{data} left the chat")

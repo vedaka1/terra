@@ -13,6 +13,7 @@ jobs:
     steps:
     
     - uses: actions/checkout@v3
+    
     - name: Prepare Database
       run: docker run --name test-db -e POSTGRES_DB=terra -e POSTGRES_USER=username -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:15.1
       

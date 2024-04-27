@@ -1,4 +1,5 @@
 // import axios from 'axios';
+import { useAuthStore } from '@/store/auth';
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -23,6 +24,7 @@ const router = createRouter({
     {
       path: '/friends',
       name: 'friends',
+      meta: { requiresAuth: true },
       component: () => import('../views/FriendsPage.vue')
     },
     {
@@ -31,9 +33,16 @@ const router = createRouter({
       component: () => import('../views/ProfilePage.vue')
     },
     {
-      path: '/messages',
-      name: 'messages',
+      path: '/chats',
+      name: 'chats',
+      meta: { requiresAuth: true },
       component: () => import('../views/MessagesPage.vue')
+    },
+    {
+      path: '/chats/:id',
+      name: 'chat',
+      meta: { requiresAuth: true },
+      component: () => import('../views/ChatPage.vue')
     }
   ]
 })
@@ -41,9 +50,9 @@ const router = createRouter({
 router.beforeEach(async (to, _, next) => {
   // const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
   // const isAuthenticated = axios.get('/user/me', {withCredentials: true});
+  const authStore = useAuthStore();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const isAuthenticated = localStorage.getItem('user')
-      if (isAuthenticated) {
+      if (authStore.user) {
         next()
       } else {
         next('/login')
